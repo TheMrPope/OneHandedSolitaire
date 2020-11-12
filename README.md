@@ -1,4 +1,7 @@
 # One-handed Solitaire
+
+Program plays specified number of games of one-handed solitaire and saves results about each game.
+
 ##### Usage from root directory: 
 $ python src/solitaire.py [NUMBER_GAMES]
 
