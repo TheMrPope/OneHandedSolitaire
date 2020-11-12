@@ -14,35 +14,35 @@ def playGame(f):
 
     f.write("\n")
 
-    # Gameplay Loop
-    while len(deck) > 0:
+    stillPlaying = True
+    needToDraw = True
+    noMatch = False
 
-        foundMatch = False
+    while stillPlaying:
 
-        # draw up to 4 cards
-        while len(hand) < 4:
+        # draw up to 4 if able and if need to
+        while (len(hand) < 4 and needToDraw) or noMatch:
             if len(deck) > 0:
                 hand.add(deck.draw())
+                noMatch = False
             else:
                 break
-        # if the deck is empty and hand has less than 3 cards, you lose
-        if len(hand) < 4:
-            break
 
-        # if card ranks match
-        if hand.view(0).getRank() == hand.view(3).getRank():
-            hand.matchRemove()
-            foundMatch = True
+        needToDraw = False
 
-        # if card suits match
-        elif hand.view(0).getSuit() == hand.view(3).getSuit():
-            hand.suitsRemove()
-            foundMatch = True
 
-        # draw if no matches
-        if not foundMatch:
-            if len(deck) > 0:
-                hand.add(deck.draw())
+        while not needToDraw:
+            if not isMatch(hand) and not isSuit(hand):
+                needToDraw = True
+                noMatch = True
+            elif isMatch(hand):
+                hand.matchRemove()
+            elif isSuit(hand):
+                hand.suitsRemove()
+
+        if len(deck) == 0 and noMatch:
+            stillPlaying = False
+
 
     # Determine Results
     cardsLeft = len(hand)
@@ -58,8 +58,19 @@ def playGame(f):
     else:
         return False
 
+def isMatch(h):
+    if len(h) < 4:
+        return False
+    else:
+        return h.view(0).getRank() == h.view(3).getRank()
 
-def main(games=5000):
+def isSuit(h):
+    if len(h) < 4:
+        return False
+    else:
+        return h.view(0).getSuit() == h.view(3).getSuit()
+
+def main(games=10000):
 
     winCount = 0
 
