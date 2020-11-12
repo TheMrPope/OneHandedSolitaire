@@ -1,5 +1,6 @@
 from deck import Deck
 from hand import Hand
+import sys
 
 def playGame(f):
     # Set up deck and hand
@@ -49,27 +50,34 @@ def playGame(f):
     else:
         return False
 
-def main():
 
-    NUM_GAMES = 10000
+def main(games=5000):
+
     winCount = 0
 
     # Set up stats file
     f = open("stats.txt", "w")
 
-    for i in range(NUM_GAMES):
+    for i in range(games):
         if playGame(f):
             winCount += 1
 
-    winPercent = (winCount / NUM_GAMES) * 100
+    winPercent = (winCount / games) * 100
 
     f.write("\n")
     f.write("Final Stats: \n")
-    f.write("Games Played: " + str(NUM_GAMES) + "\t" + "Games Won: " + str(winCount) + "\t" + "Winning %: " +
+    f.write("Games Played: " + str(games) + "\t" + "Games Won: " + str(winCount) + "\t" + "Winning %: " +
             str(winPercent))
     f.close()
 
 
+if len(sys.argv) > 1:
+    try:
+        numGames = int(sys.argv[1])
+        main(numGames)
+    except:
+        print("ERROR: Unaccepted argument \'" + sys.argv[1] + "\' is not an integer")
+        sys.exit(1)
+else:
+    main()
 
-# Run File
-main()
