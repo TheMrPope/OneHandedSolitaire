@@ -9,7 +9,7 @@ def playGame(f):
 
     # Write deck setup
     f.write("Deck: ")
-    for i in range(52):
+    for i in range(len(deck)):
         f.write(deck.view(i).getNickName() + " ")
 
     f.write("\n")
@@ -25,25 +25,33 @@ def playGame(f):
                 hand.add(deck.draw())
             else:
                 break
-
+        # if the deck is empty and hand has less than 3 cards, you lose
         if len(hand) < 4:
             break
 
+        # if card ranks match
         if hand.view(0).getRank() == hand.view(3).getRank():
             hand.matchRemove()
             foundMatch = True
 
+        # if card suits match
         elif hand.view(0).getSuit() == hand.view(3).getSuit():
             hand.suitsRemove()
             foundMatch = True
 
+        # draw if no matches
         if not foundMatch:
             if len(deck) > 0:
                 hand.add(deck.draw())
 
     # Determine Results
     cardsLeft = len(hand)
-    f.write(str(cardsLeft) + " Cards Left\n\n")
+    f.write("Ending Hand: ")
+
+    for j in range(cardsLeft):
+        f.write(hand.view(j).getNickName() + " ")
+
+    f.write("\n" + str(cardsLeft) + " Cards Left\n\n")
 
     if cardsLeft == 0:
         return True
