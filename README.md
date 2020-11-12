@@ -1,7 +1,7 @@
 # One-handed Solitaire
 ##### Usage from root directory: 
 $ python src/solitaire.py [NUMBER_GAMES]
-<br> <br>
+
 ##### Output:
 Program outputs results to the file 'stats.txt'
 
